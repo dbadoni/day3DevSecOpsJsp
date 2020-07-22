@@ -12,6 +12,18 @@ stages {
 			sh 'mvn -v'
 		}
 	}
+	stage('security checking by trufflehog'){
+		steps {
+			sh 'docker run --rm gesellix/trufflehog --json https://github.com/dbadoni/day3DevSecOpsJsp.git >mybugs.txt'
+			sh 'cat mybugs.txt'
+		}
+	}
+	
+	stage('build java project'){
+		steps {
+			sh 'mvn clean package'
+		}
+	}
 
 
 }
