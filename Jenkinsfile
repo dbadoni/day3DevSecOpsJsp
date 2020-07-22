@@ -18,15 +18,6 @@ stages {
 			sh 'cat mybugs.txt'
 		}
 	}
-	stage('vulner by sonar'){
-		steps {
-			withSonarQubeEnv('sonar'){
-				sh 'mvn sonar:sonar'
-				sh 'cat target/sonar/report-task.txt'
-			}
-			
-		}
-	}
 	
 	stage('build java project'){
 		steps {
@@ -36,6 +27,11 @@ stages {
 	stage('connecting to ansible'){
 		steps {
 			sh 'ansible tomcat -u root -m ping'
+		}
+	}
+	stage('deploying war file using ansible'){
+		steps {
+			sh 'ansible-playbook tomcatdeploy.yml'
 		}
 	}
 
